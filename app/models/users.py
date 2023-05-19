@@ -8,6 +8,7 @@ from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 from datetime import datetime
 
+
 class Base(DeclarativeBase):
     pass
 
@@ -69,7 +70,8 @@ class Cart(Base):
     updated_at: Mapped[DateTime] = mapped_column(
         DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )
-    
+
+
 class Order(Base):
     __tablename__ = "orders"
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -85,8 +87,8 @@ class Order(Base):
     updated_at: Mapped[DateTime] = mapped_column(
         DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )
-    
-    
+
+
 class OrderItem(Base):
     __tablename__ = "order_items"
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -100,7 +102,7 @@ class OrderItem(Base):
     updated_at: Mapped[DateTime] = mapped_column(
         DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )
-    
+
 
 class Payment(Base):
     __tablename__ = "payments"
@@ -113,7 +115,8 @@ class Payment(Base):
     updated_at: Mapped[DateTime] = mapped_column(
         DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )
-    
+
+
 class Book(Base):
     __tablename__ = "books"
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -121,7 +124,9 @@ class Book(Base):
     description: Mapped[str] = mapped_column(String(30))
     price: Mapped[BigInteger] = mapped_column(BigInteger)
     quantity: Mapped[int] = mapped_column(Integer)
-    
+    order_items: Mapped[List["OrderItem"]] = relationship(
+        "OrderItem", back_populates="book"
+    )
     created_at: Mapped[DateTime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[DateTime] = mapped_column(
         DateTime, default=datetime.utcnow, onupdate=datetime.utcnow

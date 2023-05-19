@@ -1,9 +1,16 @@
+from sqlalchemy.orm import Session
+from typing import Dict, Any
+from app.helpers.password import generate_password_hash, generate_public_id
+from app.repository import user as user_repo 
+
+def create_user(session: Session, password, user_info: Dict[str, Any]):
+    user_info["password_hash"] = generate_password_hash(password)
+    user_info["public_id"] = generate_public_id()
+    user_repo.add_user(session, user_info)
+    session.commit()
+
 def get_user_by_id(user_id: str):
     return {"message": f"Hello {user_id}"}
-
-
-def add_user():
-    return {"message": "User created"}
 
 
 def logout_user():
