@@ -9,6 +9,7 @@ def create_user(session: Session, password, user_info: Dict[str, Any]):
     user_repo.add_user(session, user_info)
     session.commit()
 
+
 def get_user_by_id(user_id: str):
     return {"message": f"Hello {user_id}"}
 
