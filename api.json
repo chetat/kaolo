@@ -1,0 +1,21 @@
+POST /users
+
+Body
+{
+    "first_name": "John Doe",
+    "email": "yekuwilfred@gmail.com",
+    "last_name": "Doe",
+    "password": "12345678",
+    "phone_number": "0700000000",
+    "username": ""
+}
+
+PATCH /users/:id
+Body
+{
+    "first_name": "John Doe",
+    "username": "johndoe",
+    "last_name": "Doe",
+}
+
+GET /users/:id
