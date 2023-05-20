@@ -1,7 +1,7 @@
 from typing import List
 from typing import Optional
 from sqlalchemy import ForeignKey
-from sqlalchemy import String, DateTime, BigInteger, Integer
+from sqlalchemy import String, DateTime, BigInteger, Integer, Boolean
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -22,6 +22,7 @@ class User(Base):
     phone_number: Mapped[str] = mapped_column(String(30), unique=True, index=True)
     email: Mapped[str] = mapped_column(String(30), unique=True, index=True)
     password_hash: Mapped[str] = mapped_column(String(255))
+    is_verified: Mapped[bool] = mapped_column(Boolean, default=False)
     addresses: Mapped[List["Address"]] = relationship(
         back_populates="user", cascade="all, delete-orphan"
     )
@@ -127,6 +128,17 @@ class Book(Base):
     order_items: Mapped[List["OrderItem"]] = relationship(
         "OrderItem", back_populates="book"
     )
+    created_at: Mapped[DateTime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[DateTime] = mapped_column(
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
+
+
+class AccountVerification(Base):
+    __tablename__ = "account_verification"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    token: Mapped[str] = mapped_column(String(30))
+    phone_number: Mapped[str] = mapped_column(String(30))
     created_at: Mapped[DateTime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[DateTime] = mapped_column(
         DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
